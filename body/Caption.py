@@ -110,7 +110,8 @@ async def start(bot, query):
                 InlineKeyboardButton("🌐 Uᴘᴅᴀᴛᴇ", url=f"https://t.me/Silicon_Bot_Update"),
                 InlineKeyboardButton("📜 Sᴜᴘᴘᴏʀᴛ", url=r"https://t.me/Silicon_Botz")
             ]]
-        )
+        ),
+        disable_web_page_preview=True
 )
 
 @Client.on_callback_query(filters.regex(r'^help'))
@@ -123,7 +124,9 @@ async def help(bot, query):
             ],[
             InlineKeyboardButton('↩ ʙᴀᴄᴋ', callback_data='start')
             ]]
-        ))
+        ),
+        disable_web_page_preview=True    
+)
 
 
 @Client.on_callback_query(filters.regex(r'^about'))
@@ -136,4 +139,8 @@ async def about(bot, query):
             ],[
             InlineKeyboardButton('↩ ʙᴀᴄᴋ', callback_data='start')
             ]]
-        ))
+        ),
+        disable_web_page_preview=True 
+
+)
+
