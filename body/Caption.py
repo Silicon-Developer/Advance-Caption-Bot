@@ -61,6 +61,7 @@ async def delCap(_, msg):
 @Client.on_message(filters.channel)
 async def reCap(bot, message):
     chnl_id = message.chat.id
+    default_caption = message.caption
     if message.media:
         for file_type in ("video", "audio", "document", "voice"):
             obj = getattr(message, file_type, None)
@@ -76,7 +77,7 @@ async def reCap(bot, message):
                 try:
                     if cap_dets:
                         cap = cap_dets["caption"]
-                        replaced_caption = cap.format(file_name=file_name, file_size=get_size(file_size))
+                        replaced_caption = cap.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption)
                         await message.edit(replaced_caption)
                     else:
                         replaced_caption = DEF_CAP.format(file_name=file_name, file_size=get_size(file_size))
