@@ -78,6 +78,8 @@ async def reCap(bot, message):
             if obj and hasattr(obj, "file_name"):
                 file_name = obj.file_name
                 file_size = obj.file_size
+                language = extract_language(default_caption)
+                year = extract_year(default_caption)
                 file_name = (
                     re.sub(r"@\w+\s*", "", file_name)
                     .replace("_", " ")
