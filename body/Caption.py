@@ -80,7 +80,7 @@ async def reCap(bot, message):
                         replaced_caption = cap.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption)
                         await message.edit(replaced_caption)
                     else:
-                        replaced_caption = DEF_CAP.format(file_name=file_name, file_size=get_size(file_size))
+                        replaced_caption = DEF_CAP.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption)
                         await message.edit(replaced_caption)
                 except FloodWait as e:
                     await asyncio.sleep(e.x)
