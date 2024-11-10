@@ -57,6 +57,16 @@ async def delCap(_, msg):
         await e_val.delete()
         return
 
+def extract_language(default_caption):
+    language_pattern = r'\b(Hindi|English|Tamil|Telugu|Malayalam|Kannada|Hin)\b'#Contribute More Language If You Have
+    languages = set(re.findall(language_pattern, default_caption, re.IGNORECASE))
+    if not languages:
+        return "Hindi-English"
+    return ", ".join(sorted(languages, key=str.lower))
+
+def extract_year(default_caption):
+    match = re.search(r'\b(19\d{2}|20\d{2})\b', default_caption)
+    return match.group(1) if match else None
 
 @Client.on_message(filters.channel)
 async def reCap(bot, message):
