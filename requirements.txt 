@@ -3,7 +3,7 @@ gunicorn
 aiohttp
 motor
 asyncio
-pyrogram
+pyrofork==2.3.48
 tgcrypto
 Jinja2==3.0.3
 werkzeug==2.0.2
