@@ -199,6 +199,12 @@ async def reCap(bot, message):
                     .replace("_", " ")
                     .replace(".", " ")
                 )
+                replacements = await get_replacements(chnl_id)
+                file_name = apply_word_replacements(file_name, replacements)
+
+                rem_words = await getRemWords(chnl_id)
+                for word in rem_words:
+                    file_name = re.sub(rf"\b{re.escape(word)}\b", "", file_name)
                 cap_dets = await chnl_ids.find_one({"chnl_id": chnl_id})
                 try:
                     if cap_dets:
