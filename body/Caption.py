@@ -92,6 +92,43 @@ async def setCap(bot, message):
         await addCap(chnl_id, caption)
         return await message.reply(f"Yᴏᴜʀ Nᴇᴡ Cᴀᴘᴛɪᴏɴ Is: {caption}")
 
+@Client.on_message(filters.command("replace_word") & filters.channel)
+async def replace_word(bot, message):
+    if len(message.command) < 2:
+        return await message.reply(
+            "Usage: **/replace_word [original_word] [replacement_word], [original_word2] [replacement_word2]**"
+        )
+
+    chnl_id = message.chat.id
+    replacements = message.text.split(" ", 1)[1]  # Get everything after /replace_word
+
+    replacement_list = []
+    for replacement_pair in replacements.split(","):
+        parts = replacement_pair.strip().split(" ")
+        if len(parts) < 2:
+            continue  # Skip if pair is not valid
+        original_word = parts[0]
+        replacement_word = " ".join(parts[1:])  # Join the rest as replacement word
+
+        replacement_list.append({"original": original_word, "replacement": replacement_word})
+
+    await chnl_ids.update_one(
+        {"chnl_id": chnl_id},
+        {"$push": {"replacements": {"$each": replacement_list}}},
+        upsert=True
+    )
+    await message.reply("**ʀᴇᴘʟᴀᴄᴇᴍᴇɴᴛ ᴡᴏʀᴅs ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇss ғᴜʟʟʏ.** ✅")
+
+@Client.on_message(filters.command("del_replace_words") & filters.channel)
+async def del_replace_words(bot, message):
+    chnl_id = message.chat.id
+    channel_data = await chnl_ids.find_one({"chnl_id": chnl_id})
+    if channel_data and "replacements" in channel_data:
+        await chnl_ids.update_one({"chnl_id": chnl_id}, {"$unset": {"replacements": ""}})
+        await message.reply("**ᴀʟʟ ʀᴇᴘʟᴀᴄᴇᴍᴇɴᴛ ᴡᴏʀᴅs ʜᴀᴠᴇ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ.**")
+    else:
+        await message.reply("**ɴᴏ ʀᴇᴘʟᴀᴄᴇᴍᴇɴᴛ ᴡᴏʀᴅs ғᴏᴜɴᴅ ᴛᴏ ᴅᴇʟᴇᴛᴇ.**")
+
 @Client.on_message(filters.command("del_cap") & filters.channel)
 async def delCap(_, msg):
     chnl_id = msg.chat.id
