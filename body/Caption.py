@@ -129,6 +129,29 @@ async def del_replace_words(bot, message):
     else:
         await message.reply("**ɴᴏ ʀᴇᴘʟᴀᴄᴇᴍᴇɴᴛ ᴡᴏʀᴅs ғᴏᴜɴᴅ ᴛᴏ ᴅᴇʟᴇᴛᴇ.**")
 
+
+@Client.on_message(filters.command("rem_words") & filters.channel)
+async def setRemWords(bot, message):
+    if len(message.command) < 2:
+        return await message.reply(
+            "Usage: **/rem_words word1 word2** - ᴀᴅᴅ ᴡᴏʀᴅs ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ʀᴇᴍᴏᴠᴇ ғʀᴏᴍ ғɪʟᴇ ɴᴀᴍᴇ"
+        )
+    chnl_id = message.chat.id
+    words = message.command[1:] 
+    await addRemWords(chnl_id, words)
+    await message.reply(f"Added words to remove: {', '.join(words)}")
+
+@Client.on_message(filters.command("del_rem_words") & filters.channel)
+async def delRemWords(bot, message):
+    chnl_id = message.chat.id
+
+    channel_data = await chnl_ids.find_one({"chnl_id": chnl_id})
+    if channel_data and "rem_words" in channel_data:
+        await chnl_ids.update_one({"chnl_id": chnl_id}, {"$unset": {"rem_words": ""}})
+        await message.reply("**ᴀʟʟ ʀᴇᴍᴏᴠᴇ ᴡᴏʀᴅs ʜᴀᴠᴇ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ.**")
+    else:
+        await message.reply("**ɴᴏ ʀᴇᴍᴏᴠᴇ ᴡᴏʀᴅs ғᴏᴜɴᴅ ᴛᴏ ᴅᴇʟᴇᴛᴇ.**")
+
 @Client.on_message(filters.command("del_cap") & filters.channel)
 async def delCap(_, msg):
     chnl_id = msg.chat.id
@@ -151,6 +174,13 @@ def extract_language(default_caption):
 def extract_year(default_caption):
     match = re.search(r'\b(19\d{2}|20\d{2})\b', default_caption)
     return match.group(1) if match else None
+
+def apply_word_replacements(file_name, replacements):
+    for item in replacements:
+        original = item["original"]
+        replacement = item["replacement"]
+        file_name = re.sub(rf"\b{re.escape(original)}\b", replacement, file_name, flags=re.IGNORECASE)
+    return file_name
 
 @Client.on_message(filters.channel)
 async def reCap(bot, message):
