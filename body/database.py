@@ -41,3 +41,7 @@ async def addRemWords(chnl_id, words):
 async def getRemWords(chnl_id):
     data = await chnl_ids.find_one({"chnl_id": chnl_id})
     return data.get("rem_words", []) if data else []
+
+async def get_replacements(chnl_id):
+    data = await chnl_ids.find_one({"chnl_id": chnl_id})
+    return data.get("replacements", []) if data else []
