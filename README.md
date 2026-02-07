@@ -24,6 +24,10 @@
 start - Start The Bot.
 set_cap - To set Custom Caption.
 del_cap - Remove Caption.
+del_words - To add Del Words.
+del_rem_words - To delete Remove words List.
+replace_words - To add Replace Words.
+del_replace_words - To Delete Replace Words.
 broadcast - Boadcast Message To Users.
 total_users - Total No. Of Users.
 restart - Restart The Bot.
@@ -36,6 +40,9 @@ restart - Restart The Bot.
 `{size}` To Get File Size. 
 `{language}` To Get Language.
 `{year}` To get Years.
+`{duration}` To Get The Duration.
+`{height}` To get the height.
+`{width}` To get The Width.
 </pre>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
