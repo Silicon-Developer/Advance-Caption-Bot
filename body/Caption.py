@@ -181,6 +181,7 @@ def apply_word_replacements(file_name, replacements):
         replacement = item["replacement"]
         file_name = re.sub(rf"\b{re.escape(original)}\b", replacement, file_name, flags=re.IGNORECASE)
     return file_name
+
 def format_duration(duration):
     if duration:
         hours = duration // 3600
@@ -209,6 +210,9 @@ async def reCap(bot, message):
                 file_size = obj.file_size
                 language = extract_language(default_caption)
                 year = extract_year(default_caption)
+                duration = formatted_duration,
+                height = height or "N/A", 
+                width=width or "N/A",
                 file_name = (
                     re.sub(r"@\w+\s*", "", file_name)
                     .replace("_", " ")
@@ -227,7 +231,7 @@ async def reCap(bot, message):
                         replaced_caption = cap.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption, language=language, year=year)
                         await message.edit(replaced_caption)
                     else:
-                        replaced_caption = DEF_CAP.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption, language=language, year=year)
+                        replaced_caption = DEF_CAP.format(file_name=file_name, file_size=get_size(file_size), default_caption=default_caption, language=language, year=year, duration = formatted_duration, height = height or "N/A", width = width or "N/A",)
                         await message.edit(replaced_caption)
                 except FloodWait as e:
                     await asyncio.sleep(e)
