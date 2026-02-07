@@ -181,6 +181,21 @@ def apply_word_replacements(file_name, replacements):
         replacement = item["replacement"]
         file_name = re.sub(rf"\b{re.escape(original)}\b", replacement, file_name, flags=re.IGNORECASE)
     return file_name
+def format_duration(duration):
+    if duration:
+        hours = duration // 3600
+        minutes = (duration % 3600) // 60
+        seconds = duration % 60
+        formatted_duration = ""
+
+        if hours > 0:
+            formatted_duration += f"{hours}H-"
+        if minutes > 0:
+            formatted_duration += f"{minutes}M-"
+
+        formatted_duration += f"{seconds:02}Sec"
+        return formatted_duration
+    return "N/A"
 
 @Client.on_message(filters.channel)
 async def reCap(bot, message):
