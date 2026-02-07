@@ -31,3 +31,13 @@ async def getid():
 
 async def delete(id):
     await users.delete_one(id)
+
+async def addRemWords(chnl_id, words):
+    await chnl_ids.update_one(
+        {"chnl_id": chnl_id},
+        {"$addToSet": {"rem_words": {"$each": words}}},
+        upsert=True)
+
+async def getRemWords(chnl_id):
+    data = await chnl_ids.find_one({"chnl_id": chnl_id})
+    return data.get("rem_words", []) if data else []
